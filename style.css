@@ -1,0 +1,68 @@
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  font: 20px/1.2 Arial, sans-serif;
+  padding: 20px;
+  margin: 5px auto 15px;
+  border: none;
+  box-sizing: border-box;
+}
+
+.keyboard {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(5, 50px);
+  gap: 5px;
+  justify-content: center;
+  background-color: #ececec;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 5px;
+  margin: 0px auto;
+}
+
+.button {
+  /* float: left; */
+  text-align: center;
+  min-width: 50px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font: 20px Arial, sans-serif;
+  background-color: rgb(255, 255, 255);
+  border-bottom-color: rgb(181, 181, 181);
+  border-radius: 5px;
+  box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  height: 40px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.pressed {
+  box-shadow: 0 0 3px -1px rgb(63, 63, 63);
+  background-color: #2FAFF7;
+  transition: background-color 0.3s;
+}
+
+.button[data-alt]::after {
+  white-space: pre;
+  content: attr(data-alt) '\A' attr(data-symbol);
+  line-height: 0.95rem;
+  font-size: 0.7em;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+
+  .button {
+    font: 15px Arial, sans-serif;
+    padding: 5px 0;
+  }
+
+}
