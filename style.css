@@ -20,6 +20,8 @@
   overflow: hidden;
   padding: 5px;
   margin: 0px auto;
+  /* border: none;
+  box-sizing: border-box; */
 }
 
 .button {
@@ -31,13 +33,18 @@
   display: flex;
   justify-content: center;
   font: 20px Arial, sans-serif;
+  letter-spacing: normal;
   background-color: rgb(255, 255, 255);
   border-bottom-color: rgb(181, 181, 181);
+  border: none;
   border-radius: 5px;
   box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
   padding: 5px;
   height: 40px;
   cursor: pointer;
+}
+
+.capitalize {
   text-transform: capitalize;
 }
 
@@ -46,6 +53,13 @@
   background-color: #2FAFF7;
   transition: background-color 0.3s;
 }
+
+/* .button[data-key]::after {
+  position: relative;
+  z-index: 1;
+  content: attr(data-key);
+  text-transform: capitalize;
+} */
 
 .button[data-alt]::after {
   white-space: pre;
@@ -57,6 +71,7 @@
   right: 0;
   text-align: center;
 }
+
 
 @media (max-width: 1200px) {
 
