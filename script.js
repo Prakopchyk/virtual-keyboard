@@ -41,7 +41,8 @@ const kbKeys =
     new Key("p", "KeyP", ""),
     new Key("[", "BracketLeft", "{"),
     new Key("]", "BracketRight", "}"),
-    new Key('\\', "Backslash", '|')
+    new Key('\\', "Backslash", '|'),
+    new Key('Del', "Delete", '')
   ],
   [
     new Key("CapsLock", "CapsLock", ""),
@@ -100,23 +101,56 @@ let keyBoard = document.createElement('div');
 keyBoard.classList.add('keyboard');
 textArea.after(keyBoard);
 
+let pressedButtonCode = null;
+let isCapsLock = false;
+let isShift = false;
+
+
 window.addEventListener('keydown', (e) => {
-  // console.log(e)
+  console.log(e)
   let button = getButton(e.code);
   if (button != null) {
     button.classList.add('pressed');
   }
-  textArea.value = textArea.value + e.key;
+  if (e.code === 'Enter') {
+    textArea.value = textArea.value + '\n';
+  }
+  else if (e.code == 'Backspace') {
+    if (textArea.value.length !== 0) {
+      textArea.value = textArea.value.slice(0, -1);
+    }
+  }
+  else if (e.code == 'CapsLock') {
+    isCapsLock = !isCapsLock;
+  }
+  else if (e.code == 'Tab') {
+    textArea.value = textArea.value + '\u00A0';
+  }
+  else if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+    isShift = true;
+  }
+
+  else {
+    var symbol = e.key;
+    if ((isCapsLock && !e.shiftKey) || (!isCapsLock && e.shiftKey)) {
+      symbol = symbol.toUpperCase();
+    }
+    textArea.value = textArea.value + symbol;
+  }
+
   e.preventDefault();
 })
 
-let pressedButtonCode = null;
 
 window.addEventListener('keyup', (e) => {
   // console.log(e)
   let button = getButton(e.code);
   if (button != null) {
     button.classList.remove('pressed');
+  }
+
+  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+    isShift = false;
   }
 
   e.preventDefault();
@@ -145,19 +179,17 @@ function init() {
       let code = button.getAttribute('data-key');
       let symbol = button.getAttribute('data-symbol');
       pressedButtonCode = code;
-
-
-      let event = new KeyboardEvent("keydown", { bubbles: true, code: `${code}`, key: `${symbol}` });
+      let alt = button.getAttribute('data-alt');
+      if (isShift && alt !== '') {
+        symbol = alt;
+      }
+      let event = new KeyboardEvent("keydown", { bubbles: true, code: `${code}`, key: `${symbol}`, shiftKey: isShift });
       // const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, code: "KeyQ", key: "Q", char: "Q", shiftKey: true });
       textArea.dispatchEvent(event);
-
-
-
     })
   })
 
   window.addEventListener("mouseup", function () {
-    console.log("mouseup")
     if (pressedButtonCode !== null) {
       console.log(pressedButtonCode)
       let event = new KeyboardEvent("keyup", { bubbles: true, code: `${pressedButtonCode}` });
