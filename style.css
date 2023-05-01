@@ -1,7 +1,8 @@
 .textarea {
   width: 100%;
-  min-height: 200px;
+  height: 200px;
   font: 20px/1.2 Arial, sans-serif;
+  letter-spacing: 0.1rem;
   padding: 20px;
   margin: 5px auto 15px;
   border: none;
@@ -36,8 +37,12 @@
   border-radius: 5px;
   box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
   padding: 5px;
-  text-transform: capitalize;
   cursor: pointer;
+}
+
+.capitalize {
+  text-transform: capitalize;
+  font-weight: bold;
 }
 
 .pressed {
