@@ -105,9 +105,15 @@ let pressedButtonCode = null;
 let isCapsLock = false;
 let isShift = false;
 
+function setCaretPosition(ctrl, pos) {
+  // Modern browsers
+  if (ctrl.setSelectionRange) {
+    ctrl.focus();
+    ctrl.setSelectionRange(pos, pos);
+  }
+}
 
 window.addEventListener('keydown', (e) => {
-  console.log(e)
   let button = getButton(e.code);
   if (button != null) {
     button.classList.add('pressed');
@@ -117,9 +123,35 @@ window.addEventListener('keydown', (e) => {
   }
   else if (e.code == 'Backspace') {
     if (textArea.value.length !== 0) {
-      textArea.value = textArea.value.slice(0, -1);
+      let selectionStart = textArea.selectionStart - 1;
+      selectionStart = selectionStart > 0 ? selectionStart : 0
+      if (textArea.selectionStart == textArea.selectionEnd) {
+        if ((textArea.selectionStart - 1) >= 0) {
+          textArea.value = textArea.value.slice(0, textArea.selectionStart - 1) + textArea.value.slice(textArea.selectionEnd);
+        }
+      }
+      else {
+        textArea.value = textArea.value.slice(0, textArea.selectionStart) + textArea.value.slice(textArea.selectionEnd);
+      }
+      textArea.setSelectionRange(selectionStart, selectionStart);
     }
   }
+  else if (e.code == 'Delete') {
+    if (textArea.value.length !== 0) {
+      let selectionStart = textArea.selectionStart;
+      if (textArea.selectionStart == textArea.selectionEnd) {
+        if (selectionStart >= 0) {
+          textArea.value = textArea.value.slice(0, textArea.selectionStart) + textArea.value.slice(textArea.selectionEnd + 1);
+        }
+      }
+      else {
+        textArea.value = textArea.value.slice(0, textArea.selectionStart) + textArea.value.slice(textArea.selectionEnd);
+      }
+      textArea.setSelectionRange(selectionStart, selectionStart);
+    }
+  }
+
+
   else if (e.code == 'CapsLock') {
     isCapsLock = !isCapsLock;
   }
@@ -143,7 +175,6 @@ window.addEventListener('keydown', (e) => {
 
 
 window.addEventListener('keyup', (e) => {
-  // console.log(e)
   let button = getButton(e.code);
   if (button != null) {
     button.classList.remove('pressed');
@@ -153,7 +184,16 @@ window.addEventListener('keyup', (e) => {
     isShift = false;
   }
 
+  else if (e.code == 'Delete') {
+    if (textArea.value.length !== 0) {
+      console.log(textArea.selectionStart);
+      console.log(textArea.selectionEnd);
+    }
+  }
+
   e.preventDefault();
+  textArea.focus();
+
 })
 
 function getButton(code) {
@@ -175,7 +215,7 @@ function init() {
   let allButtons = document.querySelectorAll(".button");
 
   allButtons.forEach(button => {
-    button.addEventListener("mousedown", function () {
+    button.addEventListener("mousedown", function (e) {
       let code = button.getAttribute('data-key');
       let symbol = button.getAttribute('data-symbol');
       pressedButtonCode = code;
@@ -189,7 +229,11 @@ function init() {
     })
   })
 
-  window.addEventListener("mouseup", function () {
+  keyBoard.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+  })
+
+  window.addEventListener("mouseup", function (e) {
     if (pressedButtonCode !== null) {
       console.log(pressedButtonCode)
       let event = new KeyboardEvent("keyup", { bubbles: true, code: `${pressedButtonCode}` });
@@ -197,6 +241,7 @@ function init() {
       textArea.dispatchEvent(event);
     }
     pressedButtonCode = null;
+    e.preventDefault();
   })
 }
 
