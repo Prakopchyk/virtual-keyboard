@@ -42,7 +42,6 @@
 
 .capitalize {
   text-transform: capitalize;
-  font-weight: bold;
 }
 
 .pressed {

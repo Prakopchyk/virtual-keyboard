@@ -192,8 +192,16 @@ window.addEventListener('keydown', (e) => {
   }
   else if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     isShift = true;
-  }
 
+    let buttons = document.querySelectorAll('.button');
+    buttons.forEach(el => {
+      if (isShift && !isCapsLock) {
+        el.classList.add('capitalize');
+      } else {
+        el.classList.remove('capitalize');
+      }
+    })
+  }
   else {
     let symbol = e.key;
     if ((isCapsLock && !e.shiftKey) || (!isCapsLock && e.shiftKey)) {
@@ -215,8 +223,15 @@ window.addEventListener('keyup', (e) => {
 
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     isShift = false;
+    let buttons = document.querySelectorAll('.button');
+    buttons.forEach(el => {
+      if (!isCapsLock) {
+        el.classList.remove('capitalize');
+      } else {
+        el.classList.add('capitalize');
+      }
+    })
   }
-
   else if (e.code == 'Delete') {
     if (textArea.value.length !== 0) {
       console.log(textArea.selectionStart);
