@@ -1,6 +1,6 @@
 .textarea {
   width: 100%;
-  min-height: 100px;
+  min-height: 200px;
   font: 20px/1.2 Arial, sans-serif;
   padding: 20px;
   margin: 5px auto 15px;
@@ -20,16 +20,12 @@
   overflow: hidden;
   padding: 5px;
   margin: 0px auto;
-  /* border: none;
-  box-sizing: border-box; */
 }
 
 .button {
-  /* float: left; */
-  text-align: center;
   min-width: 50px;
   height: 50px;
-  align-items: center;
+  align-content: center;
   display: flex;
   justify-content: center;
   font: 20px Arial, sans-serif;
@@ -40,12 +36,8 @@
   border-radius: 5px;
   box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
   padding: 5px;
-  height: 40px;
-  cursor: pointer;
-}
-
-.capitalize {
   text-transform: capitalize;
+  cursor: pointer;
 }
 
 .pressed {
@@ -54,29 +46,23 @@
   transition: background-color 0.3s;
 }
 
-/* .button[data-key]::after {
-  position: relative;
-  z-index: 1;
-  content: attr(data-key);
-  text-transform: capitalize;
-} */
-
 .button[data-alt]::after {
   white-space: pre;
   content: attr(data-alt) '\A' attr(data-symbol);
-  line-height: 0.95rem;
+  line-height: 1.1rem;
   font-size: 0.7em;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
 }
 
+.text {
+  font: 20px/1.2 Arial, sans-serif;
+  text-align: center;
+  margin: 20px auto;
+}
 
 @media (max-width: 1200px) {
 
   .button {
-    font: 15px Arial, sans-serif;
+    font: 17px Arial, sans-serif;
     padding: 5px 0;
   }
 

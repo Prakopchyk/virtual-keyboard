@@ -86,12 +86,6 @@ const kbKeys =
     new Key("→", "ArrowRight", "")
   ]];
 
-// const keyBoardSymbols = ["`~", "!1", "@2", "#3", "$4", "%5", "^6", "&7", "*8", "(9", ")0", "-_", "+=", "Backspace",
-//   "Tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "DEL",
-//   "Caps Lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", "; ", "\n'", "ENTER",
-//   "Shift", "z", "x", "c", "v", "b", "n", "m", ".", ", ", " / ", "ArrowUp", "Shift",
-//   "Ctrl", "Win", "Alt", " ", "Alt", "Ctrl", "ArrowLeft", "ArrowDown", "ArrowRight"];
-
 let textArea = document.createElement('textarea');
 textArea.classList.add('textarea');
 textArea.setAttribute('autofocus', 'autofocus');
@@ -101,17 +95,14 @@ let keyBoard = document.createElement('div');
 keyBoard.classList.add('keyboard');
 textArea.after(keyBoard);
 
+let description = document.createElement('p');
+description.classList.add('text');
+description.innerText = `The keyboard was created in the Windows OS.\nLanguage switching is not provided`;
+keyBoard.after(description);
+
 let pressedButtonCode = null;
 let isCapsLock = false;
 let isShift = false;
-
-function setCaretPosition(ctrl, pos) {
-  // Modern browsers
-  if (ctrl.setSelectionRange) {
-    ctrl.focus();
-    ctrl.setSelectionRange(pos, pos);
-  }
-}
 
 window.addEventListener('keydown', (e) => {
   let button = getButton(e.code);
@@ -151,6 +142,33 @@ window.addEventListener('keydown', (e) => {
     }
   }
 
+  else if (e.code == 'ArrowRight') {
+    if (textArea.value.length !== 0) {
+      let newPos = textArea.selectionStart + 1;
+      textArea.setSelectionRange(newPos, newPos);
+    }
+  }
+
+  else if (e.code == 'ArrowLeft') {
+    let newPos = textArea.selectionStart - 1;
+    if (newPos >= 0) {
+
+      textArea.setSelectionRange(newPos, newPos);
+    }
+  }
+
+  else if (e.code == 'ArrowDown') {
+    textArea.value += "↓";
+  }
+
+  else if (e.code == 'ArrowUp') {
+    textArea.value += "↑";
+  }
+
+  else if (e.code == 'ControlLeft' || e.code == 'ControlRight' || e.code == 'AltLeft' || e.code == 'AltRight' || e.code == 'MetaLeft') {
+    let selectionStart = textArea.selectionStart;
+    textArea.setSelectionRange(selectionStart, selectionStart);
+  }
 
   else if (e.code == 'CapsLock') {
     isCapsLock = !isCapsLock;
@@ -163,7 +181,7 @@ window.addEventListener('keydown', (e) => {
   }
 
   else {
-    var symbol = e.key;
+    let symbol = e.key;
     if ((isCapsLock && !e.shiftKey) || (!isCapsLock && e.shiftKey)) {
       symbol = symbol.toUpperCase();
     }
@@ -197,7 +215,7 @@ window.addEventListener('keyup', (e) => {
 })
 
 function getButton(code) {
-  var button = document.querySelector(`.button[data-key='${code}']`)
+  let button = document.querySelector(`.button[data-key='${code}']`)
 
   return button;
 }
@@ -224,7 +242,6 @@ function init() {
         symbol = alt;
       }
       let event = new KeyboardEvent("keydown", { bubbles: true, code: `${code}`, key: `${symbol}`, shiftKey: isShift });
-      // const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, code: "KeyQ", key: "Q", char: "Q", shiftKey: true });
       textArea.dispatchEvent(event);
     })
   })
