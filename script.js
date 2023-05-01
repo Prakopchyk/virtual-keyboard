@@ -233,7 +233,7 @@ function init() {
   let allButtons = document.querySelectorAll(".button");
 
   allButtons.forEach(button => {
-    button.addEventListener("mousedown", function (e) {
+    button.addEventListener("mousedown", function () {
       let code = button.getAttribute('data-key');
       let symbol = button.getAttribute('data-symbol');
       pressedButtonCode = code;
