@@ -174,6 +174,18 @@ window.addEventListener('keydown', (e) => {
 
   else if (e.code == 'CapsLock') {
     isCapsLock = !isCapsLock;
+
+    let buttons = document.querySelectorAll('.button');
+
+    buttons.forEach(el => {
+      if (isCapsLock) {
+        el.classList.add('capitalize');
+      }
+      else {
+        el.classList.remove('capitalize');
+      }
+    })
+
   }
   else if (e.code == 'Tab') {
     textArea.value = textArea.value + '\u00A0';
@@ -186,6 +198,7 @@ window.addEventListener('keydown', (e) => {
     let symbol = e.key;
     if ((isCapsLock && !e.shiftKey) || (!isCapsLock && e.shiftKey)) {
       symbol = symbol.toUpperCase();
+
     }
     insertSymbol(symbol);
   }
