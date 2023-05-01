@@ -89,6 +89,7 @@ const kbKeys =
 let textArea = document.createElement('textarea');
 textArea.classList.add('textarea');
 textArea.setAttribute('autofocus', 'autofocus');
+textArea.setAttribute('rows', '5');
 document.body.prepend(textArea);
 
 let keyBoard = document.createElement('div');
@@ -110,7 +111,7 @@ window.addEventListener('keydown', (e) => {
     button.classList.add('pressed');
   }
   if (e.code === 'Enter') {
-    textArea.value = textArea.value + '\n';
+    insertSymbol('\n');
   }
   else if (e.code == 'Backspace') {
     if (textArea.value.length !== 0) {
@@ -158,11 +159,12 @@ window.addEventListener('keydown', (e) => {
   }
 
   else if (e.code == 'ArrowDown') {
-    textArea.value += "↓";
+
+    insertSymbol("↓");
   }
 
   else if (e.code == 'ArrowUp') {
-    textArea.value += "↑";
+    insertSymbol("↑");
   }
 
   else if (e.code == 'ControlLeft' || e.code == 'ControlRight' || e.code == 'AltLeft' || e.code == 'AltRight' || e.code == 'MetaLeft') {
@@ -185,7 +187,7 @@ window.addEventListener('keydown', (e) => {
     if ((isCapsLock && !e.shiftKey) || (!isCapsLock && e.shiftKey)) {
       symbol = symbol.toUpperCase();
     }
-    textArea.value = textArea.value + symbol;
+    insertSymbol(symbol);
   }
 
   e.preventDefault();
@@ -213,6 +215,12 @@ window.addEventListener('keyup', (e) => {
   textArea.focus();
 
 })
+
+function insertSymbol(symbol) {
+  let newPos = textArea.selectionStart + 1;
+  textArea.value = textArea.value.slice(0, textArea.selectionStart) + symbol + textArea.value.slice(textArea.selectionEnd);
+  textArea.setSelectionRange(newPos, newPos);
+}
 
 function getButton(code) {
   let button = document.querySelector(`.button[data-key='${code}']`)
